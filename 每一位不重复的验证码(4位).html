@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="utf-8">
+	<title></title>
+	<style >
+		p{
+			display: block;
+			width: 110px;
+			height: 50px;
+			border: 1px solid black;
+			line-height: 50px;
+			font-size: 25px;
+			letter-spacing: 10px;
+			padding-left: 5px;
+		}
+	</style>
+</head>
+<body>
+	<button id="btn">生成四位不重复验证码</button>
+	<p id="txt"></p>
+	<script >
+		var txt=document.getElementById("txt")
+		var btn=document.getElementById("btn")
+
+		btn.onclick=function(){
+			var str=""+chasheng()	//用来储存完整的字符串
+			panduan(str)	
+		}
+
+		function panduan(str){
+			var ran=chasheng()	//调用产生随机数的函数
+			for(var i=0;i<str.length;i++){
+				if(ran==str[i]){		//如果跟字符串中的有重复
+					return panduan(str)	//重新执行这个函数，产生新的随机数
+				}
+			}
+			if(str.length==4){		//不重复了就执行到这，判断字符串长度，如果为4就是满了
+				txt.innerHTML=str         //就可以输出了
+			}else{
+				str+=ran                       //如果没有够长度，就放进字符串中
+				return panduan(str)		//然后重新再来
+			}			
+
+		}
+
+		function chasheng(){
+			var ran=Math.round(Math.random()*122)
+			//如果不是0-9(48-57)，a-z(97-122),   A-Z(65-90)  就一直随机
+			while(!(ran>=48&&ran<=57 || ran>=65&&ran<=90 || ran>=97&&ran<=122)){
+				ran=Math.round(Math.random()*122)
+			}
+			//随机到了就转为字符
+			return String.fromCharCode(ran)
+		}
+	</script>
+</body>
+</html>
